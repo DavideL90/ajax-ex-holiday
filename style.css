@@ -32,13 +32,28 @@ body{
    border-radius: 5px;
    border-style: none;
 }
+#central-cnt #list-Holidays, #central-cnt #general-infos{
+   float: left;
+}
 /* List of holidays */
 #central-cnt #list-Holidays{
    height: calc(100% - 100px);
-   width: 30%;
+   width: 20%;
    border: 1px solid black;
    overflow-y: auto;
 }
 #list-Holidays .list-item{
    padding: 20px 10px;
+   cursor: pointer;
+   font-size: 20px;
+}
+/* General infos */
+#central-cnt #general-infos{
+   height: calc(100% - 100px);
+   width: 60%;
+   border: 1px solid black;
+}
+#general-infos .info-item{
+   padding: 20px;
+   font-size: 20px;
 }

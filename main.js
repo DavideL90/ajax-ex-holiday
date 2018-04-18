@@ -126,8 +126,6 @@ $(document).ready(function(){
       //search for the iso code of the country
       var isoCodeCountry = findKeyOfNation(selectedCountry, countriesArray);
       var isoCodeMonth = findKeyOfMonth(selectedMonth, monthsArray);
-      console.log(isoCodeCountry);
-      console.log(isoCodeMonth);
       //make an ajax request to obtain the list of the holidays
       $.ajax({
          url: 'https://holidayapi.com/v1/holidays',
@@ -140,13 +138,23 @@ $(document).ready(function(){
          },
          success: function(data){
             //print the holiday List
-            console.log(data);
             printHolidayData(data.holidays);
          },
          error: function(){
             alert('ERROR');
          }
       });
+   });
+   //When click on the date show infos
+   $(document).on('click', '.list-item', function(){
+      //take the date from the list
+      var dataInfo = $(this).text();
+      //print the number of the day
+      printDayNumber(dataInfo);
+      // print the day of the week
+      printDayWeek(dataInfo);
+      //print the numbers of days since last holiday
+      printNumDayLastHoliday(dataInfo);
    });
 });
 
@@ -233,7 +241,56 @@ function printHolidayData(info){
    for (var i = 0; i < info.length; i++) {
       $('#list-Holidays').append('<div class="list-item">' + info[i].date + '</div>');
    }
-
-
-
+}
+//print info of a given data
+function printDayNumber(thisData){
+   var dataMoment = moment(thisData);
+   console.log(dataMoment);
+   //get the day of the year
+   var dayOfYear = moment(dataMoment).dayOfYear();
+   console.log(dayOfYear);
+   //add the day of the year inside span
+   $('#numDay').text(dayOfYear);
+}
+//print the day of the week of holiday
+function printDayWeek(thisData){
+   //convert the date into a moment obj
+   var dataMoment = moment(thisData);
+   //get the day of the week
+   var weekDay = moment(dataMoment).day();
+   console.log(weekDay);
+   //check which day of week is
+   var dayWeek = $('#weekDay');
+   switch(weekDay) {
+      case 0:
+         dayWeek.text('Sunday');
+         break;
+      case 1:
+         dayWeek.text('Monday');
+         break;
+      case 2:
+         dayWeek.text('Tuesday');
+         break;
+      case 3:
+         dayWeek.text('Wednesday');
+         break;
+      case 4:
+         dayWeek.text('Thursday');
+         break;
+      case 5:
+         dayWeek.text('Friday');
+         break;
+      case 6:
+         dayWeek.text('Saturday');
+         break;
+      default:
+         dayWeek.text('Error');
+   }
+}
+//print days passed since last holiday
+function printNumDayLastHoliday(thisData){
+   var dataMoment = moment(thisData);
+   var today = moment();
+   var duration = today.diff(dataMoment, 'days');
+   $('#daysLastHoliday').text(duration);
 }
