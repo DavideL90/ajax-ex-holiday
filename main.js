@@ -1,4 +1,4 @@
-var countryArray = [
+var countriesArray = [
    {"AR": "Argentina"},
    {"AW": "Aruba"},
    {"BO": "Bolivia"},
@@ -80,6 +80,42 @@ var countryArray = [
    {"UA": "Ukraine"},
    {"ZA": "South Africa"},
 ]
+var monthsArray = [
+   { 1: "January"},
+   { 2: "February"},
+   { 3: "March"},
+   { 4: "April"},
+   { 5: "May"},
+   { 6: "June"},
+   { 7: "July"},
+   { 8: "August"},
+   { 9: "September"},
+   { 10: "October"},
+   { 11: "November"},
+   { 12: "December"},
+]
+var yearsArray = [
+   2000,
+   2001,
+   2002,
+   2003,
+   2004,
+   2005,
+   2006,
+   2007,
+   2008,
+   2009,
+   2010,
+   2011,
+   2012,
+   2013,
+   2014,
+   2015,
+   2016,
+   2017
+]
 $(document).ready(function(){
-   console.log(countryArray);
+   console.log(countriesArray);
+   console.log(monthsArray);
+   console.log(yearsArray);
 });
