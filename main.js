@@ -147,6 +147,7 @@ $(document).ready(function(){
    });
    //When click on the date show infos
    $(document).on('click', '.list-item', function(){
+      // $('.select').
       //take the date from the list
       var dataInfo = $(this).text();
       //print the number of the day
@@ -155,6 +156,30 @@ $(document).ready(function(){
       printDayWeek(dataInfo);
       //print the numbers of days since last holiday
       printNumDayLastHoliday(dataInfo);
+   });
+   //when document starts show years of holiday today
+   var todayYear = moment().year();
+   //set -1 because it said I should have paid
+   var todayDay = moment().date() - 1;
+   var todayMonth = moment().month() + 1;
+   console.log(todayMonth);
+   $.ajax({
+      url: 'https://holidayapi.com/v1/holidays',
+      method: 'GET',
+      data: {
+         key: "d78dd42e-cba8-48c7-8d81-b427ef44442e",
+         country: 'IT',
+         year: todayYear,
+         month: todayMonth,
+         day: todayDay
+      },
+      success: function(data){
+         console.log(data);
+         for()
+      },
+      error: function(){
+         alert('Error');
+      }
    });
 });
 
