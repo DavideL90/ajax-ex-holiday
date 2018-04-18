@@ -81,10 +81,10 @@ var countriesArray = [
    {"ZA": "South Africa"},
 ]
 var monthsArray = [
-   { 1: "January"},
-   { 2: "February"},
-   { 3: "March"},
-   { 4: "April"},
+   { "1": "January"},
+   { "2": "February"},
+   { "3": "March"},
+   { "4": "April"},
    { 5: "May"},
    { 6: "June"},
    { 7: "July"},
@@ -114,8 +114,126 @@ var yearsArray = [
    2016,
    2017
 ]
+
 $(document).ready(function(){
-   console.log(countriesArray);
-   console.log(monthsArray);
-   console.log(yearsArray);
+   //Fill the option menu
+   fillSelects(countriesArray, monthsArray, yearsArray);
+   $('#searchBtn').click(function(){
+      //take the selected option
+      var selectedCountry = $('.nation option:selected').text();
+      var selectedMonth = $('.month option:selected').text();
+      var selectedYear = $('.year option:selected').text();
+      //search for the iso code of the country
+      var isoCodeCountry = findKeyOfNation(selectedCountry, countriesArray);
+      var isoCodeMonth = findKeyOfMonth(selectedMonth, monthsArray);
+      console.log(isoCodeCountry);
+      console.log(isoCodeMonth);
+      //make an ajax request to obtain the list of the holidays
+      $.ajax({
+         url: 'https://holidayapi.com/v1/holidays',
+         method: 'GET',
+         data: {
+            key: "d78dd42e-cba8-48c7-8d81-b427ef44442e",
+            country: isoCodeCountry,
+            year: selectedYear,
+            month: isoCodeMonth
+         },
+         success: function(data){
+            //print the holiday List
+            console.log(data);
+            printHolidayData(data.holidays);
+         },
+         error: function(){
+            alert('ERROR');
+         }
+      });
+   });
 });
+
+//Function that fill the option values
+function fillSelects(arrCountries, arrMonths, arrYears){
+   var optNation = $('.nation');
+   var optMonths = $('.month');
+   var optYears = $('.year');
+   //create an array with all the keys of the objects
+   var objKeys = [];
+   //fill the array with the objects keys
+   for (var i = 0; i < arrCountries.length; i++) {
+      objKeys.push(Object.keys(arrCountries[i]).toString());
+   }
+   //fill the select of countries
+   for (var i = 0; i < arrCountries.length; i++) {
+      optNation.append('<option value="cntry' + (i + 1) +'">' + arrCountries[i][objKeys[i]] + '</option>');
+   }
+   // fill the select of months
+   for (var i = 0; i < arrMonths.length; i++) {
+      optMonths.append('<option value="month' + (i + 1) + '">' + arrMonths[i][i + 1] + '</option>');
+
+   }
+   //fill the select of years
+   for (var i = 0; i < arrYears.length; i++) {
+      optYears.append('<option value="year' + (i + 1) + '">' + arrYears[i] + '</option>');
+
+   }
+}
+//function to find the iso code of optNation
+function findKeyOfNation(actualNation, arrCountries){
+   for (var i = 0; i < arrCountries.length; i++) {
+      var objKeys = [];
+      //fill the array with the objects keys
+      for (var i = 0; i < arrCountries.length; i++) {
+         objKeys.push(Object.keys(arrCountries[i]).toString());
+      }
+      //declaring a var to save the key of the object
+      var keyOfCountry = "";
+      //Check if I find the country. If so exit from the loop
+      var isFound = false;
+      var cont = 0;
+      do{
+         if((arrCountries[cont][objKeys[cont]]) == actualNation){
+            keyOfCountry = objKeys[cont];
+            isFound = true;
+         }
+         else{
+            cont++;
+         }
+      }while((!isFound) && (cont < arrCountries.length))
+      return keyOfCountry;
+   }
+}
+//function to finde the iso code of optMonths
+function findKeyOfMonth(actualMonth, arrMonths){
+   for (var i = 0; i < arrMonths.length; i++) {
+      var objKeys = [];
+      //fill the array with the objects keys
+      for (var i = 0; i < arrMonths.length; i++) {
+         objKeys.push(Object.keys(arrMonths[i]).toString());
+      }
+      //declaring a var to save the key of the object
+      var keyOfMonth = "";
+      //Check if I find the country. If so exit from the loop
+      var isFound = false;
+      var cont = 0;
+      do{
+         if((arrMonths[cont][objKeys[cont]]) == actualMonth){
+            keyOfMonth = objKeys[cont];
+            isFound = true;
+         }
+         else{
+            cont++;
+         }
+      }while((!isFound) && (cont < arrMonths.length))
+      return keyOfMonth;
+   }
+}
+//function that prints the holidays data
+function printHolidayData(info){
+   console.log(info);
+   $('#list-Holidays').children().remove();
+   for (var i = 0; i < info.length; i++) {
+      $('#list-Holidays').append('<div class="list-item">' + info[i].date + '</div>');
+   }
+
+
+
+}

@@ -26,3 +26,19 @@ body{
    text-align: center;
    height: 20px;
 }
+#chooseMenu button{
+   margin: auto;
+   padding: 5px 15px;
+   border-radius: 5px;
+   border-style: none;
+}
+/* List of holidays */
+#central-cnt #list-Holidays{
+   height: calc(100% - 100px);
+   width: 30%;
+   border: 1px solid black;
+   overflow-y: auto;
+}
+#list-Holidays .list-item{
+   padding: 20px 10px;
+}
