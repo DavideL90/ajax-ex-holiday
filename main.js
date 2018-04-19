@@ -157,30 +157,48 @@ $(document).ready(function(){
       //print the numbers of days since last holiday
       printNumDayLastHoliday(dataInfo);
    });
-   //when document starts show years of holiday today
-   var todayYear = moment().year();
-   //set -1 because it said I should have paid
-   var todayDay = moment().date() - 1;
-   var todayMonth = moment().month() + 1;
-   console.log(todayMonth);
-   $.ajax({
-      url: 'https://holidayapi.com/v1/holidays',
-      method: 'GET',
-      data: {
-         key: "d78dd42e-cba8-48c7-8d81-b427ef44442e",
-         country: 'IT',
-         year: todayYear,
-         month: todayMonth,
-         day: todayDay
-      },
-      success: function(data){
-         console.log(data);
-         for()
-      },
-      error: function(){
-         alert('Error');
-      }
-   });
+   // $(window).load(function(){
+      //when document starts show years of holiday today
+      var todayYear = moment().year();
+      //set -1 because it said I should have paid
+      var todayDay = moment().date() - 1;
+      var todayMonth = moment().month() + 1;
+      console.log(todayMonth);
+      var cont = 11;
+      var checkCont = 10;
+      do{
+         if(checkCont < cont){
+            var diff = cont - checkCont;
+            cont--;
+            $.ajax({
+               url: 'https://holidayapi.com/v1/holidays',
+               method: 'GET',
+               data: {
+                  key: "d78dd42e-cba8-48c7-8d81-b427ef44442e",
+                  country: 'IT',
+                  year: todayYear - diff,
+                  month: todayMonth,
+                  day: todayDay
+               },
+               success: function(data){
+                  console.log(data);
+                  if(data.holidays.length == 0){
+                     $('#Italy-holiday').append('<div class="holiday-item">' + (todayYear - diff) + ' No holiday </div>');
+                  }
+                  else{
+                     $('#Italy-holiday').append('<div class="holiday-item">' + todayYear + ' Yes holiday </div>');
+                  }
+                  checkCont--;
+               },
+               error: function(){
+                  alert('Error');
+               },
+            });
+         }
+      }while(checkCont > 0);
+
+   // });
+
 });
 
 //Function that fill the option values
